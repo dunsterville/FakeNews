@@ -13,4 +13,4 @@ require('./routes')(app)
 
 require('mongoose')
   .connection
-  .once('open', () => app.listen(3000))
+  .once('open', () => app.listen(process.env.PORT || 3000))
