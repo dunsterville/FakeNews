@@ -8,5 +8,5 @@ module.exports = (model, Schema) => {
     }
   })
 
-  return model('Article', Article)
+  return model('Note', Note)
 }
