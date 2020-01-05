@@ -1,6 +1,7 @@
 module.exports = (model, Schema) => {
 
   const Article = new Schema({
+    _id: String,
     headline: String,
     summary: String,
     URL: String,
