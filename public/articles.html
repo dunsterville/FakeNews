@@ -16,8 +16,8 @@
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a href="./index.html">Home</a></li>
         <li><a href="./articles.html">Saved Articles</a></li>
-        <a id="scrape" class="waves-effect waves-light green btn">SCRAPE NEW ARTICLES</a>
-        <a id="clear" class="waves-effect waves-light red btn">CLEAR ARTICLES</a>
+        <a class="waves-effect waves-light green btn">SCRAPE NEW ARTICLES</a>
+        <a class="waves-effect waves-light red btn">CLEAR ARTICLES</a>
       </ul>
     </div>
   </nav>
@@ -25,23 +25,9 @@
     <img class="background" src="./images/news.jpg">
   </div>
 <container>
+
 </container>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script>
-
-  document.getElementById('scrape').addEventListener('click', e => {
-    e.preventDefault()
-
-    console.log('ping')
-
-    axios.get('new/articles')
-      .then((data) => {
-        console.log(data)
-      })
-  })
-  
-</script>
 </body>
 </html>
