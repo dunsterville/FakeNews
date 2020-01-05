@@ -1,19 +1,50 @@
 const { Article } = require('../models')
+const axios = require('axios')
+const cheerio = require('cheerio')
 
 module.exports = app => {
 
-  // Get all articles
-  app.get('/articles', (req,res) => {
+  // Get all articles from Database
+  app.get('/articles', (req, res) => {
     Article.find()
       .populate('notes')
       .then(articles => res.json(articles))
       .catch(err => console.error(err))
   })
 
-  // Post on articles
-  app.post('./articles', (req,res) => {
+  // Get new articles by scrapping
+  app.get('/new/articles', (req, res) => {
+    axios.get('https://www.nytimes.com/')
+      .then(({data: html}) => {
+        const $ = cheerio.load(html)
+        let arr = []
+        $('article').each((i,el) => {
+          if ($(el).contents().find('p').text()) {
+            let article = {
+              title: $(el).contents().find('h2').text(),
+              summary: $(el).contents().find('p').text(),
+              link: 'https://www.nytimes.com' + $(el).contents().find('a').attr('href')
+            }
+            arr.push(article)
+          }
+        })
+        
+        res.json(arr)
+      })
+      .catch(err => console.error(err))
+  })
+
+  // Get user saved articles
+  app.get('/user/articles')
+
+  // Save all articles
+  app.post('/articles', (req, res) => {
     Article.create(req.body)
       .then(() => res.sendStatus(200))
       .catch(err => console.error(err))
   })
+
+  // Save one article
+  app.post('/user/articles')
+
 }
