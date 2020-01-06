@@ -21,14 +21,16 @@ module.exports = app => {
         $('article').each((i,el) => {
           if ($(el).contents().find('p').text()) {
             let article = {
-              title: $(el).contents().find('h2').text(),
+              headline: $(el).contents().find('h2').text(),
               summary: $(el).contents().find('p').text(),
-              link: 'https://www.nytimes.com' + $(el).contents().find('a').attr('href')
+              URL: 'https://www.nytimes.com' + $(el).contents().find('a').attr('href'),
+              _id: $(el).contents().find('h2').text()
             }
             arr.push(article)
+            Article.create(article)
+              .catch(err => console.error(err)) 
           }
         })
-        
         res.json(arr)
       })
       .catch(err => console.error(err))
