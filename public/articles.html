@@ -29,5 +29,48 @@
 </container>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<script>
+
+const postNote = () => {
+      document.getElementById('addNote').addEventListener('click', e => {
+        e.preventDefault()
+        // Hide Modal
+        let Note = {
+          note: document.getElementById('noteContent').value,
+          article: document.getElementById('articleId').value
+        }
+        axios.post('/notes', Note)
+        .then(response => {
+          console.log(response)
+        })
+        .catch(e => console.log(e))
+        console.log(review)
+        location.reload()
+      })
+    }
+
+    const deleteNote = () => {
+      document.getElementById('deleteNote').addEventListener('click', e => {
+        e.preventDefault()
+        // Hide Modal
+    
+        axios.delete(`/notes/${e.target.dataset.noteid}`)
+        .then(response => {
+          console.log(response)
+        })
+        .catch(e => console.log(e))
+        console.log(review)
+        location.reload()
+      })
+    }
+
+  
+  
+
+postNote()
+deleteNote()
+
+</script>
 </body>
 </html>

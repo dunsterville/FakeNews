@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,10 @@
   <title>Fake News</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="./Style.css">
-  <link href="https://fonts.googleapis.com/css?family=Berkshire+Swash|Kumar+One|Passion+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Berkshire+Swash|Kumar+One|Passion+One&display=swap"
+    rel="stylesheet">
 </head>
+
 <body>
   <nav>
     <div class="nav-wrapper">
@@ -24,50 +27,106 @@
   <div class="row center">
     <img class="background" src="./images/news.jpg">
   </div>
-<container id="articles">
-</container>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <h4>Modal Header</h4>
+      <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+  </div>
 
-<script>
-  document.getElementById('scrape').addEventListener('click', e => {
-    e.preventDefault()
-    console.log('ping')
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script>
-// Event listener for SCRAPE button
-  document.getElementById('scrape').addEventListener('click', e => {
-    e.preventDefault()
-// Axios request for articles
-    axios.get('new/articles')
-      .then(({ data }) => {
-        data.forEach(article => {
-        const articleCard = document.createElement('div')
-        articleCard.innerHTML = `
+
+
+  <container id="articles">
+  </container>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script>
+
+      //Event listener for SCRAPE button
+      document.getElementById('scrape').addEventListener('click', e => {
+        e.preventDefault()
+        // Axios request for articles
+        axios.get('new/articles')
+          .then(({ data }) => {
+            console.log(data)
+            data.forEach(article => {
+              const articleCard = document.createElement('div')
+              articleCard.innerHTML = `
         <div class="row">
           <div class="col s12 m6">
             <div class="card blue-grey darken-1">
               <div class="card-content white-text">
-              <span class="card-title">${article.title}</span>
+              <span class="card-title">${article.headline}</span>
               <p>${article.summary}</p>
             </div>
             <div class="card-action">
-            <a href="${article.link}">Article Link</a>
-            <a id="noteMod" class="waves-effect waves-light blue btn">Add Note</a>
+            <a href="${article.URL}">Article Link</a>
+            <a id="addNote" data-target="modal1" class="waves-effect waves-light blue btn modal-trigger" >Add Note</a>
           </div>
         </div>
       </div>
     </div>
   `
-  document.getElementById('articles').append(articleCard)
-        })
+              document.getElementById('articles').append(articleCard)
+            })
+          })
+          .catch(e => console.error(e))
+      }
+      )
+
+    
+
+    document.addEventListener('click', e => {
+      if (e.target.id === 'addNote') {
+        console.log('ping')
+          $('#modal1').modal();
+      }
+    })
+
+
+    const postNote = () => {
+      document.getElementById('addNote').addEventListener('click', e => {
+        e.preventDefault()
+        // Hide Modal
+        let Note = {
+          note: document.getElementById('noteContent').value,
+          article: document.getElementById('articleId').value
+        }
+        axios.post('/notes', Note)
+          .then(response => {
+            console.log(response)
+          })
+          .catch(e => console.log(e))
+        console.log(review)
+        location.reload()
       })
-      .catch(e => console.error(e))
-  })
+    }
+
+    const deleteNote = () => {
+      document.getElementById('deleteNote').addEventListener('click', e => {
+        e.preventDefault()
+        // Hide Modal
+
+        axios.delete(`/notes/${e.target.dataset.noteid}`)
+          .then(response => {
+            console.log(response)
+          })
+          .catch(e => console.log(e))
+        console.log(review)
+        location.reload()
+      })
+    }
 
 
 
-
-</script>
+  </script>
 </body>
+
 </html>
